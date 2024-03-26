@@ -18,4 +18,41 @@ public class FeedbackService {
 
         return ResponseEntity.ok(response);
     }
+
+    public ResponseEntity<?> generateLlmOutput (String code) {
+        // This method is used to verify the feedback for the given url
+
+        HashMap<String, Object> response=new HashMap<>();
+        response.put("status", "success");
+        response.put("code", code);
+
+        return ResponseEntity.ok(response);
+    }
+    public ResponseEntity<?> verifyOutput (String code) {
+        // This method is used to verify the feedback for the given url
+
+        HashMap<String, Object> response=new HashMap<>();
+        response.put("status", "success");
+        response.put("code", code);
+
+        return ResponseEntity.ok(response);
+    }
+    public ResponseEntity<?> verifyWithInfer (String code) {
+        // This method is used to verify the feedback for the given url
+
+        HashMap<String, Object> response=new HashMap<>();
+        response.put("status", "success");
+        response.put("code", code);
+
+        return ResponseEntity.ok(response);
+    }
+    public ResponseEntity<?> verifyWithCheckstyle (String code) {
+        // This method is used to verify the feedback for the given url
+
+        HashMap<String, Object> response=new HashMap<>();
+        response.put("status", "success");
+        response.put("code", code);
+
+        return ResponseEntity.ok(response);
+    }
 }
