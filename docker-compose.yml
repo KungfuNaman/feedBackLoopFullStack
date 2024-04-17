@@ -1,0 +1,23 @@
+version: '3.8'
+services:
+  backend:
+    build:
+      context: ./backend  # Context is the directory containing the Dockerfile
+      dockerfile: Dockerfile
+    ports:
+      - "8080:8080"
+    volumes:
+      - ./backend:/app  # Mount the backend code to the container
+      - /app/target  # Anonymous volume for build artifacts to avoid overriding on host
+
+  frontend:
+    build:
+      context: ./frontend  # Context is the directory containing the Dockerfile
+      dockerfile: Dockerfile
+    ports:
+      - "3000:3000"
+    volumes:
+      - ./frontend:/usr/src/app  # Mount the frontend code to the container
+      - /usr/src/app/node_modules  # Anonymous volume for node_modules
+
+  # Additional services can be configured here if necessary
