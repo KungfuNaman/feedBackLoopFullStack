@@ -17,7 +17,7 @@ public class FeedbackService {
         FeedbackService feedbackService = new FeedbackService();
         String code ="import java.util.Scanner;\n" +
                 "\n" +
-                "public class SubmittedCode {\n" +
+                "public class Fibonacci {\n" +
                 "    public static void main(String[] args) {\n" +
                 "        Scanner scanner = new Scanner(System.in);\n" +
                 "        System.out.print(\"Enter the number of terms: \");\n" +
@@ -44,7 +44,9 @@ public class FeedbackService {
 //        feedbackService.generateAndVerify(code);
 //        feedbackService.generateLlmOutput(code);
 //        feedbackService.verifyOutput(code);
-          feedbackService.verifyWithInfer(code);
+//          feedbackService.verifyWithInfer(code);                //DONE
+          feedbackService.verifyWithSymbolicExecution(code);
+
 //        feedbackService.verifyWithCheckstyle(code);
     }
     public ResponseEntity<?> generateAndVerify (String code) {
@@ -75,57 +77,46 @@ public class FeedbackService {
 
         return ResponseEntity.ok(response);
     }
-    public ResponseEntity<?> verifyWithInfer (String code) {
-        // This method is used to verify the feedback for the given url
+    public ResponseEntity<?> verifyWithInfer(String code) {
+        String filePath = "Fibonacci.java"; // Path where the code will be saved
 
-        // Temporarily save the code to a file
-        String filePath = "SubmittedCode.java"; // Adjust the path as needed
+        // Write the submitted code to a file
         try (BufferedWriter writer = new BufferedWriter(new FileWriter(filePath))) {
             writer.write(code);
         } catch (IOException e) {
             e.printStackTrace();
             return ResponseEntity.internalServerError().body("Failed to save the submitted code.");
         }
-        // Compile and analyze the code (simplified; you should execute this in a more secure and controlled manner)
+
+        // Compile and analyze the code
         try {
             Process compileProcess = Runtime.getRuntime().exec("javac " + filePath);
             int compileResult = compileProcess.waitFor();
             if (compileResult != 0) {
                 String errors = readProcessOutput(compileProcess.getErrorStream());
-                return ResponseEntity.internalServerError().body("Compilation failed.");
+                return ResponseEntity.internalServerError().body("Compilation failed: " + errors);
             }
             String compileLog = readProcessOutput(compileProcess.getInputStream());
-
 
             Process inferProcess = Runtime.getRuntime().exec("infer run -- javac " + filePath);
             int inferResult = inferProcess.waitFor();
             if (inferResult != 0) {
                 String errors = readProcessOutput(inferProcess.getErrorStream());
-                return ResponseEntity.internalServerError().body("Infer analysis failed.");
+                return ResponseEntity.internalServerError().body("Infer analysis failed: " + errors);
             }
             String analysisResult = readProcessOutput(inferProcess.getInputStream());
 
-
-            // Assuming the analysis was successful, return a success message.
-            // You might want to parse and return the actual analysis result.
             Map<String, Object> response = new HashMap<>();
             response.put("message", "Code analyzed successfully.");
+            response.put("analysisResult", analysisResult); // Return analysis result
             return ResponseEntity.ok(response);
         } catch (IOException | InterruptedException e) {
             e.printStackTrace();
             return ResponseEntity.internalServerError().body("An error occurred during compilation or analysis.");
         }
-
     }
-    public ResponseEntity<?> verifyWithCheckstyle (String code) {
-        // This method is used to verify the feedback for the given url
 
-        HashMap<String, Object> response=new HashMap<>();
-        response.put("status", "success");
-        response.put("code", code);
-
-        return ResponseEntity.ok(response);
-    }
+    // Helper method to read process output into a String
     private String readProcessOutput(InputStream inputStream) throws IOException {
         StringBuilder output = new StringBuilder();
         try (BufferedReader reader = new BufferedReader(new InputStreamReader(inputStream))) {
@@ -136,4 +127,62 @@ public class FeedbackService {
         }
         return output.toString();
     }
+    public ResponseEntity<?> verifyWithCheckstyle (String code) {
+        // This method is used to verify the feedback for the given url
+
+        HashMap<String, Object> response=new HashMap<>();
+        response.put("status", "success");
+        response.put("code", code);
+
+        return ResponseEntity.ok(response);
+    }
+
+    public ResponseEntity<?> verifyWithSymbolicExecution(String code) {
+        String filePath = "Fibonacci.java";  // Path where the code will be saved
+        String className = "Fibonacci";  // Assuming class name is Fibonacci
+
+        // Write the submitted code to a file
+        try (BufferedWriter writer = new BufferedWriter(new FileWriter(filePath))) {
+            writer.write(code);
+        } catch (IOException e) {
+            e.printStackTrace();
+            return ResponseEntity.internalServerError().body("Failed to save the submitted code.");
+        }
+
+        // Compile the code to generate class file
+        try {
+            Process compileProcess = Runtime.getRuntime().exec("javac " + filePath);
+            int compileResult = compileProcess.waitFor();
+            if (compileResult != 0) {
+                String errors = readProcessOutput(compileProcess.getErrorStream());
+                return ResponseEntity.internalServerError().body("Compilation failed: " + errors);
+            }
+
+            // Create a .jpf file for Java Pathfinder
+            String jpfFilePath = "verification.jpf";
+            try (BufferedWriter writer = new BufferedWriter(new FileWriter(jpfFilePath))) {
+                writer.write("target=" + className);
+                writer.newLine();
+                writer.write("classpath=.;");
+            }
+
+            // Execute Java Pathfinder with the .jpf file
+            Process jpfProcess = Runtime.getRuntime().exec("java -jar ./../../jpf-core/build/RunJPF.jar " + jpfFilePath);
+            int jpfResult = jpfProcess.waitFor();
+            if (jpfResult != 0) {
+                String errors = readProcessOutput(jpfProcess.getErrorStream());
+                return ResponseEntity.internalServerError().body("Java Pathfinder analysis failed: " + errors);
+            }
+            String analysisResult = readProcessOutput(jpfProcess.getInputStream());
+
+            Map<String, Object> response = new HashMap<>();
+            response.put("message", "Code analyzed successfully with Java Pathfinder.");
+            response.put("analysisResult", analysisResult);  // Return analysis result
+            return ResponseEntity.ok(response);
+        } catch (IOException | InterruptedException e) {
+            e.printStackTrace();
+            return ResponseEntity.internalServerError().body("An error occurred during compilation or analysis.");
+        }
+    }
+
 }

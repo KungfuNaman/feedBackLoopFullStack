@@ -1,0 +1,49 @@
+[37675][      debug] Sqlite write daemon: starting up
+[37675][      debug] Sqlite write daemon: set up complete, waiting for connections
+[37675][environment] CWD = /Users/naman/Documents/Term2/verificationValidation/feedBackFullStack/backend
+[37675][environment] No .inferconfig file found
+[37675][environment] Project root = /Users/naman/Documents/Term2/verificationValidation/feedBackFullStack/backend
+[37675][environment] INFER_ARGS =   @/var/folders/b7/y167jd4d3218n92stszmxzv40000gn/T/args.tmp.6fe9b3
+[37675][environment]                --progress-bar-style plain
+[37675][environment] command line arguments:   infer run -- javac Fibonacci.java
+[37675][environment] Could not retrieve available memory (possibly not on Linux)
+[37675][environment] Active checkers: self-in-block (C/C++/ObjC), parameter-not-null-checked (C/C++/ObjC), starvation (C/C++/ObjC, Java), siof (C/C++/ObjC), racerd (C/C++/ObjC, C#/.Net, Java), pulse (C/C++/ObjC, C#/.Net, Erlang, Hack, Java, Python), liveness (C/C++/ObjC), inefficient-keyset-iterator (Java), fragment-retains-view (Java)
+[37675][environment] Scheduler: restart
+[37675][environment] Cores used: 8
+[37675][environment] Infer version v1.2.0-e625107a3f
+[37675][environment] Copyright 2009 - present Facebook. All Rights Reserved.
+[37675][environment] 
+[37675][   progress] Capturing in javac mode...
+[37675][      debug] Current working directory: '/Users/naman/Documents/Term2/verificationValidation/feedBackFullStack/backend'
+[37675][      debug] Trying to execute: javac '-J-Duser.language=en' '@/Users/naman/Documents/Term2/verificationValidation/feedBackFullStack/backend/infer-out/tmp/javac_args.tmp.d6e653' 2>'/Users/naman/Documents/Term2/verificationValidation/feedBackFullStack/backend/infer-out/tmp/javac.tmp.25dc19.out'
+[37675][      debug] *** Success. Logs:
+[37675][      debug] Translating 1 source files (1 classes)
+[37675][      debug] Global tenv size global_tenv_size_mb: 0
+[37675][      debug] done capturing all files
+[37675][      debug] GC stats for capture:
+[37675][      debug]   minor_words: 1.11931e+07
+[37675][      debug]   promoted_words: 2.37087e+06
+[37675][      debug]   major_words: 2.56451e+06
+[37675][      debug]   minor_collections: 17
+[37675][      debug]   major_collections: 3
+[37675][      debug]   compactions: 0
+[37675][      debug]   top_heap_words: 3082752
+[37675][      debug]   
+[37675][environment] Parallel jobs: 8
+[37675][   progress] Found 1 source file to analyze in /Users/naman/Documents/Term2/verificationValidation/feedBackFullStack/backend/infer-out
+[37678][      debug] Detected 0 spec overwrites.
+[37678][      debug] Sqlite write daemon: terminating
+[37678][      debug] dbwriter.useful_time_user= 0.01667800
+[37678][      debug] dbwriter.useful_time_sys= 0.03725400
+[37678][      debug] dbwriter.useful_time_wall= 0.10844010
+[37678][      debug] dbwriter.useful_time_oncpu_pct= 50%
+[37678][      debug] dbwriter.store_sql_user= 0.00000000
+[37678][      debug] dbwriter.store_sql_sys= 0.00000000
+[37678][      debug] dbwriter.store_sql_wall= 0.00000000
+[37678][      debug] dbwriter.store_sql_oncpu_pct= 0%
+[37678][      debug] dbwriter.store_sql_pct= 0%
+[37678][      debug] dbwriter.total_time_user= 0.04961600
+[37678][      debug] dbwriter.total_time_sys= 0.04405000
+[37678][      debug] dbwriter.total_time_wall= 0.82388587
+[37678][      debug] dbwriter.total_time_oncpu_pct= 11%
+[37678][      debug] [37675][ intern err] Subprocess 6: died after receiving sigsegv (signal number 11)
