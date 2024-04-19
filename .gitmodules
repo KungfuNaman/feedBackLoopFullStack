@@ -1,3 +1,6 @@
 [submodule "backend/backend/jpf-core"]
 	path = backend/backend/jpf-core
 	url = https://github.com/javapathfinder/jpf-core.git
+[submodule "backend/jpf-core"]
+	path = backend/jpf-core
+	url = https://github.com/javapathfinder/jpf-core.git
