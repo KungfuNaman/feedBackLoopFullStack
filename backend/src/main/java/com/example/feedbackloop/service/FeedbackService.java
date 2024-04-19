@@ -45,9 +45,9 @@ public class FeedbackService {
 //        feedbackService.generateLlmOutput(code);
 //        feedbackService.verifyOutput(code);
 //          feedbackService.verifyWithInfer(code);                //DONE
-//          feedbackService.verifyWithSymbolicExecution(code);      //DONE
+          feedbackService.verifyWithSymbolicExecution(code);      //DONE
 
-        feedbackService.verifyWithCheckstyle(code,"");
+//        feedbackService.verifyWithCheckstyle(code,"");         //DONE
     }
     public ResponseEntity<?> generateAndVerify (String code) {
         // This method is used to generate and verify the feedback  for the given url
@@ -205,7 +205,7 @@ public class FeedbackService {
             }
 
             // Execute Java Pathfinder with the .jpf file
-            Process jpfProcess = Runtime.getRuntime().exec("java -jar ./../../jpf-core/build/RunJPF.jar " + jpfFilePath);
+            Process jpfProcess = Runtime.getRuntime().exec("java -jar ./jpf-core/build/RunJPF.jar " + jpfFilePath);
             int jpfResult = jpfProcess.waitFor();
             if (jpfResult != 0) {
                 String errors = readProcessOutput(jpfProcess.getErrorStream());
