@@ -1,36 +1,16 @@
-import React, { useState } from 'react';
+import React, { useState,useEffect } from 'react';
 import { TextField, Button, Box, Typography, Grid, Paper, FormControlLabel, Checkbox, Table, TableBody, TableCell, TableRow, TableHead, TableContainer } from '@mui/material';
 import './App.css';
 import ArrowForwardIosIcon from '@mui/icons-material/ArrowForwardIos';
 import axios from 'axios';
+import demoJson from "./demos.json";
 
 function App() {
-  const demoCode = "import java.util.Scanner;\n" +
-    "\n" +
-    "public class Fibonacci {\n" +
-    "    public static void main(String[] args) {\n" +
-    "        Scanner scanner = new Scanner(System.in);\n" +
-    "        System.out.print(\"Enter the number of terms: \");\n" +
-    "        int n = scanner.nextInt();\n" +
-    "\n" +
-    "        int[] fibSequence = fibonacci(n);\n" +
-    "        System.out.print(\"Fibonacci Sequence: \");\n" +
-    "        for (int i = 0; i < n; i++) {\n" +
-    "            System.out.print(fibSequence[i] + \" \");\n" +
-    "        }\n" +
-    "    }\n" +
-    "\n" +
-    "    public static int[] fibonacci(int n) {\n" +
-    "        int[] fibSequence = new int[n];\n" +
-    "        fibSequence[0] = 0;\n" +
-    "        fibSequence[1] = 1;\n" +
-    "\n" +
-    "        for (int i = 2; i < n; i++) {\n" +
-    "            fibSequence[i] = fibSequence[i - 1] + fibSequence[i - 2];\n" +
-    "        }\n" +
-    "        return fibSequence;\n" +
-    "    }\n" +
-    "}\n";
+  const [demos, setDemos] = useState({});
+
+  useEffect(() => {
+    setDemos(demoJson);
+  }, []);
   const [classCode, setClassCode] = useState('');
   const [className, setClassName] = useState('');
   const [checkStyleConfig, setCheckStyleConfig] = useState('');
@@ -82,8 +62,15 @@ function App() {
     } catch (error) {
       setSymbolicExecutionResult('Failed to verify');
     }
+    
   };
 
+  const handleFillWithDemoValues = (demoKey) => {
+    const demo = demos[demoKey];
+    setClassName(demo.fileName);
+    setClassCode(demo.code);
+    handleCheckboxChange({ "target": { "checked": checkStyleConfig.length > 0 ? false : true } })
+  };
   return (
     <Box sx={{ display: 'flex', m: 2, height: '100vh' }}>
       <Box sx={{ width: '70%' }}>
@@ -92,19 +79,22 @@ function App() {
           Verification Dashboard
         </Typography>
         {/* Button to set all fields to default values */}
+        <Box sx={{background:"#80808042",padding:"10px",borderRadius:"10px"}}>
+        <Typography variant="h6" gutterBottom>
+          Try with demo completions from chatgpt 3.5
+        </Typography>
+        {Object.keys(demos).map((demoKey) => (
         <Button
+          key={demoKey}
           variant="contained"
           color="secondary"
-          onClick={() => {
-            setClassName('Fibonacci.java');
-            setClassCode(demoCode);
-            handleCheckboxChange({ "target": { "checked": checkStyleConfig.length > 0 ? false : true } })
-            // Set other default states if necessary
-          }}
-          sx={{ mb: 2 }}
+          onClick={() => handleFillWithDemoValues(demoKey)}
+          sx={{ mb: 2, mr: 1 }} // Added some right margin for spacing between buttons
         >
-          Fill with Demo Values
+          {demos[demoKey]['title']}
         </Button>
+      ))}
+      </Box>
 
         <TextField
           label="Class Name"
