@@ -205,7 +205,7 @@ public class FeedbackService {
             }
 
             // Execute Java Pathfinder with the .jpf file
-            Process jpfProcess = Runtime.getRuntime().exec("java -jar ./jpf-core/build/RunJPF.jar " + jpfFilePath);
+            Process jpfProcess = Runtime.getRuntime().exec("java -jar /Users/naman/Documents/Term2/verificationValidation/jpf-core/build/RunJPF.jar " + jpfFilePath);
             int jpfResult = jpfProcess.waitFor();
             if (jpfResult != 0) {
                 String errors = readProcessOutput(jpfProcess.getErrorStream());
