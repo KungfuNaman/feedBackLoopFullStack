@@ -1,49 +1,215 @@
-[37675][      debug] Sqlite write daemon: starting up
-[37675][      debug] Sqlite write daemon: set up complete, waiting for connections
-[37675][environment] CWD = /Users/naman/Documents/Term2/verificationValidation/feedBackFullStack/backend
-[37675][environment] No .inferconfig file found
-[37675][environment] Project root = /Users/naman/Documents/Term2/verificationValidation/feedBackFullStack/backend
-[37675][environment] INFER_ARGS =   @/var/folders/b7/y167jd4d3218n92stszmxzv40000gn/T/args.tmp.6fe9b3
-[37675][environment]                --progress-bar-style plain
-[37675][environment] command line arguments:   infer run -- javac Fibonacci.java
-[37675][environment] Could not retrieve available memory (possibly not on Linux)
-[37675][environment] Active checkers: self-in-block (C/C++/ObjC), parameter-not-null-checked (C/C++/ObjC), starvation (C/C++/ObjC, Java), siof (C/C++/ObjC), racerd (C/C++/ObjC, C#/.Net, Java), pulse (C/C++/ObjC, C#/.Net, Erlang, Hack, Java, Python), liveness (C/C++/ObjC), inefficient-keyset-iterator (Java), fragment-retains-view (Java)
-[37675][environment] Scheduler: restart
-[37675][environment] Cores used: 8
-[37675][environment] Infer version v1.2.0-e625107a3f
-[37675][environment] Copyright 2009 - present Facebook. All Rights Reserved.
-[37675][environment] 
-[37675][   progress] Capturing in javac mode...
-[37675][      debug] Current working directory: '/Users/naman/Documents/Term2/verificationValidation/feedBackFullStack/backend'
-[37675][      debug] Trying to execute: javac '-J-Duser.language=en' '@/Users/naman/Documents/Term2/verificationValidation/feedBackFullStack/backend/infer-out/tmp/javac_args.tmp.d6e653' 2>'/Users/naman/Documents/Term2/verificationValidation/feedBackFullStack/backend/infer-out/tmp/javac.tmp.25dc19.out'
-[37675][      debug] *** Success. Logs:
-[37675][      debug] Translating 1 source files (1 classes)
-[37675][      debug] Global tenv size global_tenv_size_mb: 0
-[37675][      debug] done capturing all files
-[37675][      debug] GC stats for capture:
-[37675][      debug]   minor_words: 1.11931e+07
-[37675][      debug]   promoted_words: 2.37087e+06
-[37675][      debug]   major_words: 2.56451e+06
-[37675][      debug]   minor_collections: 17
-[37675][      debug]   major_collections: 3
-[37675][      debug]   compactions: 0
-[37675][      debug]   top_heap_words: 3082752
-[37675][      debug]   
-[37675][environment] Parallel jobs: 8
-[37675][   progress] Found 1 source file to analyze in /Users/naman/Documents/Term2/verificationValidation/feedBackFullStack/backend/infer-out
-[37678][      debug] Detected 0 spec overwrites.
-[37678][      debug] Sqlite write daemon: terminating
-[37678][      debug] dbwriter.useful_time_user= 0.01667800
-[37678][      debug] dbwriter.useful_time_sys= 0.03725400
-[37678][      debug] dbwriter.useful_time_wall= 0.10844010
-[37678][      debug] dbwriter.useful_time_oncpu_pct= 50%
-[37678][      debug] dbwriter.store_sql_user= 0.00000000
-[37678][      debug] dbwriter.store_sql_sys= 0.00000000
-[37678][      debug] dbwriter.store_sql_wall= 0.00000000
-[37678][      debug] dbwriter.store_sql_oncpu_pct= 0%
-[37678][      debug] dbwriter.store_sql_pct= 0%
-[37678][      debug] dbwriter.total_time_user= 0.04961600
-[37678][      debug] dbwriter.total_time_sys= 0.04405000
-[37678][      debug] dbwriter.total_time_wall= 0.82388587
-[37678][      debug] dbwriter.total_time_oncpu_pct= 11%
-[37678][      debug] [37675][ intern err] Subprocess 6: died after receiving sigsegv (signal number 11)
+[64884][      debug] Sqlite write daemon: starting up
+[64884][      debug] Sqlite write daemon: set up complete, waiting for connections
+[64884][environment] CWD = /Users/naman/Documents/Term2/verificationValidation/feedBackFullStack/backend
+[64884][environment] No .inferconfig file found
+[64884][environment] Project root = /Users/naman/Documents/Term2/verificationValidation/feedBackFullStack/backend
+[64884][environment] INFER_ARGS =   @/var/folders/b7/y167jd4d3218n92stszmxzv40000gn/T/args.tmp.31f4fb
+[64884][environment]                --progress-bar-style plain
+[64884][environment] command line arguments:   infer run -- javac PossibleNullDereference.java
+[64884][environment] Could not retrieve available memory (possibly not on Linux)
+[64884][environment] Active checkers: self-in-block (C/C++/ObjC), parameter-not-null-checked (C/C++/ObjC), starvation (C/C++/ObjC, Java), siof (C/C++/ObjC), racerd (C/C++/ObjC, C#/.Net, Java), pulse (C/C++/ObjC, C#/.Net, Erlang, Hack, Java, Python), liveness (C/C++/ObjC), inefficient-keyset-iterator (Java), fragment-retains-view (Java)
+[64884][environment] Scheduler: restart
+[64884][environment] Cores used: 8
+[64884][environment] Infer version v1.2.0-e625107a3f
+[64884][environment] Copyright 2009 - present Facebook. All Rights Reserved.
+[64884][environment] 
+[64884][   progress] Capturing in javac mode...
+[64884][      debug] Current working directory: '/Users/naman/Documents/Term2/verificationValidation/feedBackFullStack/backend'
+[64884][      debug] Trying to execute: javac '-J-Duser.language=en' '@/Users/naman/Documents/Term2/verificationValidation/feedBackFullStack/backend/infer-out/tmp/javac_args.tmp.4a5363' 2>'/Users/naman/Documents/Term2/verificationValidation/feedBackFullStack/backend/infer-out/tmp/javac.tmp.2c6a76.out'
+[64884][      debug] *** Success. Logs:
+[64884][      debug] Translating 1 source files (1 classes)
+[64884][      debug] Global tenv size global_tenv_size_mb: 0
+[64884][      debug] done capturing all files
+[64884][      debug] GC stats for capture:
+[64884][      debug]   minor_words: 9.67896e+06
+[64884][      debug]   promoted_words: 2.69125e+06
+[64884][      debug]   major_words: 2.84326e+06
+[64884][      debug]   minor_collections: 10
+[64884][      debug]   major_collections: 1
+[64884][      debug]   compactions: 0
+[64884][      debug]   top_heap_words: 3545600
+[64884][      debug]   
+[64884][environment] Parallel jobs: 8
+[64884][   progress] Found 1 source file to analyze in /Users/naman/Documents/Term2/verificationValidation/feedBackFullStack/backend/infer-out
+[64893][   progress] PossibleNullDereference.java starting
+[64890][   progress] Analysing block of 200 procs, starting with PossibleNullDereference.<init>()
+[64892][   progress] Analysing block of 200 procs, starting with void PossibleNullDereference.main(String[])
+[64891][   progress] Analysing block of 200 procs, starting with String PossibleNullDereference.possiblyNull(boolean)
+[64893][   progress] PossibleNullDereference.java DONE
+[64892][   progress] PossibleNullDereference.java starting
+[64892][   progress] PossibleNullDereference.java DONE
+[64892][   progress] PossibleNullDereference.java starting
+[64892][   progress] PossibleNullDereference.java DONE
+[64890][   progress] PossibleNullDereference.java starting
+[64890][   progress] PossibleNullDereference.java DONE
+[64884][      debug] Backend stats:
+[64884][      debug]   summary_file_try_load= 19
+[64884][      debug]   summary_read_from_disk= 4
+[64884][      debug]   summary_cache_hits= 8 (29%)
+[64884][      debug]   summary_cache_misses= 19
+[64884][      debug]   ondemand_procs_analyzed= 3
+[64884][      debug]   proc_locker_lock_time_user= 0.00009400
+[64884][      debug]   proc_locker_lock_time_sys= 0.00084100
+[64884][      debug]   proc_locker_lock_time_wall= 0.00098604
+[64884][      debug]   proc_locker_lock_time_oncpu_pct= 95%
+[64884][      debug]   proc_locker_unlock_time_user= 0.00002500
+[64884][      debug]   proc_locker_unlock_time_sys= 0.00032900
+[64884][      debug]   proc_locker_unlock_time_wall= 0.00038750
+[64884][      debug]   proc_locker_unlock_time_oncpu_pct= 91%
+[64884][      debug]   restart_scheduler_useful_time_user= 0.00217400
+[64884][      debug]   restart_scheduler_useful_time_sys= 0.00278400
+[64884][      debug]   restart_scheduler_useful_time_wall= 0.00886446
+[64884][      debug]   restart_scheduler_useful_time_oncpu_pct= 56%
+[64884][      debug]   restart_scheduler_total_time_user= 0.00269300
+[64884][      debug]   restart_scheduler_total_time_sys= 0.00339200
+[64884][      debug]   restart_scheduler_total_time_wall= 0.01024958
+[64884][      debug]   restart_scheduler_total_time_oncpu_pct= 59%
+[64884][      debug]   pulse_aliasing_contradictions= 0
+[64884][      debug]   pulse_args_length_contradictions= 0
+[64884][      debug]   pulse_captured_vars_length_contradictions= 0
+[64884][      debug]   pulse_disjuncts_dropped= 0
+[64884][      debug]   pulse_interrupted_loops= 0
+[64884][      debug]   pulse_summaries_contradictions= 0
+[64884][      debug]   pulse_summaries_count= [1 -> 2, 2 -> 1]
+[64884][      debug]   pulse_summaries_total_disjuncts= 4
+[64884][      debug]   topl_reachable_calls= 0
+[64884][      debug]   timeouts= 0
+[64884][      debug]   timings= timings for fragment-retains-view:
+[64884][      debug]     p10: 0.000000s p20: 0.000000s p30: 0.000000s p40: 0.000000s
+[64884][      debug]     p50: 0.000001s p60: 0.000001s p70: 0.000001s p80: 0.000002s
+[64884][      debug]     p90: 0.000002s p95: 0.000002s p96: 0.000002s p97: 0.000002s
+[64884][      debug]     p98: 0.000002s p99: 0.000002s p99.9: 0.000002s p99.99: 0.000002s 
+[64884][      debug]   timings for inefficient-keyset-iterator:
+[64884][      debug]     p10: 0.000010s p20: 0.000010s p30: 0.000010s p40: 0.000011s
+[64884][      debug]     p50: 0.000011s p60: 0.000013s p70: 0.000015s p80: 0.000017s
+[64884][      debug]     p90: 0.000018s p95: 0.000018s p96: 0.000018s p97: 0.000018s
+[64884][      debug]     p98: 0.000018s p99: 0.000018s p99.9: 0.000018s p99.99: 0.000018s 
+[64884][      debug]   timings for pulse:
+[64884][      debug]     p10: 0.000265s p20: 0.000275s p30: 0.000305s p40: 0.000335s
+[64884][      debug]     p50: 0.000365s p60: 0.000389s p70: 0.000412s p80: 0.000436s
+[64884][      debug]     p90: 0.000444s p95: 0.000444s p96: 0.000444s p97: 0.000444s
+[64884][      debug]     p98: 0.000444s p99: 0.000444s p99.9: 0.000444s p99.99: 0.000444s 
+[64884][      debug]   timings for racerd:
+[64884][      debug]     p10: 0.000044s p20: 0.000045s p30: 0.000046s p40: 0.000048s
+[64884][      debug]     p50: 0.000050s p60: 0.000075s p70: 0.000100s p80: 0.000125s
+[64884][      debug]     p90: 0.000133s p95: 0.000133s p96: 0.000133s p97: 0.000133s
+[64884][      debug]     p98: 0.000133s p99: 0.000133s p99.9: 0.000133s p99.99: 0.000133s 
+[64884][      debug]   timings for starvation:
+[64884][      debug]     p10: 0.000045s p20: 0.000045s p30: 0.000046s p40: 0.000055s
+[64884][      debug]     p50: 0.000063s p60: 0.000074s p70: 0.000085s p80: 0.000107s
+[64884][      debug]     p90: 0.000128s p95: 0.000128s p96: 0.000128s p97: 0.000128s
+[64884][      debug]     p98: 0.000128s p99: 0.000128s p99.9: 0.000128s p99.99: 0.000128s 
+[64884][      debug]   timings for preanalysis:
+[64884][      debug]     p10: 0.000137s p20: 0.000137s p30: 0.000138s p40: 0.000146s
+[64884][      debug]     p50: 0.000154s p60: 0.000171s p70: 0.000188s p80: 0.000193s
+[64884][      debug]     p90: 0.000199s p95: 0.000199s p96: 0.000199s p97: 0.000199s
+[64884][      debug]     p98: 0.000199s p99: 0.000199s p99.9: 0.000199s p99.99: 0.000199s 
+[64884][      debug]   
+[64884][      debug]   longest_proc_duration_heap= [
+[64884][      debug]    3246us: PossibleNullDereference.java: PossibleNullDereference.<init>()
+[64884][      debug]    3085us: PossibleNullDereference.java: String PossibleNullDereference.possiblyNull(boolean)
+[64884][      debug]    1799us: PossibleNullDereference.java: void PossibleNullDereference.main(String[])
+[64884][      debug]   ]
+[64884][      debug]   process_times_user= 0.00379600
+[64884][      debug]   process_times_sys= 0.00642400
+[64884][      debug]   process_times_wall= 0.34672950
+[64884][      debug]   process_times_oncpu_pct= 3%
+[64884][      debug]   useful_times_user= 0.00364200
+[64884][      debug]   useful_times_sys= 0.00600400
+[64884][      debug]   useful_times_wall= 0.01413867
+[64884][      debug]   useful_times_oncpu_pct= 68%
+[64884][      debug]   spec_store_times_user= 0.00004000
+[64884][      debug]   spec_store_times_sys= 0.00021700
+[64884][      debug]   spec_store_times_wall= 0.00085517
+[64884][      debug]   spec_store_times_oncpu_pct= 30%
+[64884][      debug]   
+[64884][      debug] GC stats for backend_stats.gc_stats_add.:
+[64884][      debug]   minor_words: 367109
+[64884][      debug]   promoted_words: 0
+[64884][      debug]   major_words: 10483
+[64884][      debug]   minor_collections: 0
+[64884][      debug]   major_collections: 0
+[64884][      debug]   compactions: 0
+[64884][      debug]   top_heap_words: 28364800
+[64884][      debug]   
+[64884][      debug] GC stats for backend_stats.gc_stats_max.:
+[64884][      debug]   minor_words: 198904
+[64884][      debug]   promoted_words: 0
+[64884][      debug]   major_words: 5714
+[64884][      debug]   minor_collections: 0
+[64884][      debug]   major_collections: 0
+[64884][      debug]   compactions: 0
+[64884][      debug]   top_heap_words: 3545600
+[64884][      debug]   
+[64884][      debug] Average over 8 processes
+[64884][      debug] GC stats for backend_stats.gc_stats_average.:
+[64884][      debug]   minor_words: 45888.6
+[64884][      debug]   promoted_words: 0
+[64884][      debug]   major_words: 1310.38
+[64884][      debug]   minor_collections: 0
+[64884][      debug]   major_collections: 0
+[64884][      debug]   compactions: 0
+[64884][      debug]   top_heap_words: 3545600
+[64884][      debug]   
+[64884][      debug] Analysis phase finished in 98.5ms
+[64884][      debug] backend_stats.scheduler_process_analysis_time_user= 0.03088400
+[64884][      debug] backend_stats.scheduler_process_analysis_time_sys= 0.01935200
+[64884][      debug] backend_stats.scheduler_process_analysis_time_wall= 0.09842537
+[64884][      debug] backend_stats.scheduler_process_analysis_time_oncpu_pct= 51%
+[64884][      debug] GC stats for analysis_scheduler:
+[64884][      debug]   minor_words: 298048
+[64884][      debug]   promoted_words: 81507
+[64884][      debug]   major_words: 93773
+[64884][      debug]   minor_collections: 3
+[64884][      debug]   major_collections: 3
+[64884][      debug]   compactions: 1
+[64884][      debug]   top_heap_words: 3545600
+[64884][      debug]   
+[64884][     result] 
+PossibleNullDereference.java:5: error: Null Dereference
+  `data` could be null (from the call to `PossibleNullDereference.possiblyNull(...)` on line 3) and is dereferenced. 
+  3.           String data = possiblyNull(true);
+  4.           // Attempt to access a method on a potentially null object.
+  5. >         System.out.println(data.length());
+  6.       }
+  7.   
+
+
+Found 1 issue
+             Issue Type(ISSUED_TYPE_ID): #
+  Null Dereference(NULLPTR_DEREFERENCE): 1
+
+[64884][      debug] GC stats for report:
+[64884][      debug]   minor_words: 27934
+[64884][      debug]   promoted_words: 0
+[64884][      debug]   major_words: 1269
+[64884][      debug]   minor_collections: 0
+[64884][      debug]   major_collections: 0
+[64884][      debug]   compactions: 0
+[64884][      debug]   top_heap_words: 3545600
+[64884][      debug]   
+[64884][      debug] GC stats for main_process_full:
+[64884][      debug]   minor_words: 1.3499e+07
+[64884][      debug]   promoted_words: 3.22842e+06
+[64884][      debug]   major_words: 3.42918e+06
+[64884][      debug]   minor_collections: 21
+[64884][      debug]   major_collections: 5
+[64884][      debug]   compactions: 1
+[64884][      debug]   top_heap_words: 3545600
+[64884][      debug]   
+[64887][      debug] Detected 0 spec overwrites.
+[64887][      debug] Sqlite write daemon: terminating
+[64887][      debug] dbwriter.useful_time_user= 0.00860200
+[64887][      debug] dbwriter.useful_time_sys= 0.02114600
+[64887][      debug] dbwriter.useful_time_wall= 0.05590549
+[64887][      debug] dbwriter.useful_time_oncpu_pct= 53%
+[64887][      debug] dbwriter.store_sql_user= 0.00010400
+[64887][      debug] dbwriter.store_sql_sys= 0.00022600
+[64887][      debug] dbwriter.store_sql_wall= 0.00033192
+[64887][      debug] dbwriter.store_sql_oncpu_pct= 99%
+[64887][      debug] dbwriter.store_sql_pct= 1%
+[64887][      debug] dbwriter.total_time_user= 0.02830400
+[64887][      debug] dbwriter.total_time_sys= 0.02809300
+[64887][      debug] dbwriter.total_time_wall= 0.92931675
+[64887][      debug] dbwriter.total_time_oncpu_pct= 6%
+[64887][      debug] 

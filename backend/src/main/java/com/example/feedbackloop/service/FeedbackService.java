@@ -1,12 +1,12 @@
 package com.example.feedbackloop.service;
 
+import org.apache.commons.lang3.exception.ExceptionUtils;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import java.io.*;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.Objects;
 
 @Service    // This annotation is used to mark the class as a service
 public class FeedbackService {
@@ -43,9 +43,8 @@ public class FeedbackService {
                 "}\n";
 //        feedbackService.generateAndVerify(code);
 //        feedbackService.generateLlmOutput(code);
-//        feedbackService.verifyOutput(code);
 //          feedbackService.verifyWithInfer(code);                //DONE
-          feedbackService.verifyWithSymbolicExecution(code);      //DONE
+//          feedbackService.verifyWithSymbolicExecution(code);      //DONE
 
 //        feedbackService.verifyWithCheckstyle(code,"");         //DONE
     }
@@ -69,8 +68,8 @@ public class FeedbackService {
         return ResponseEntity.ok(response);
     }
 
-    public ResponseEntity<?> verifyWithInfer(String code) {
-        String filePath = "Fibonacci.java"; // Path where the code will be saved
+    public ResponseEntity<?> verifyWithInfer(String code, String fileName) {
+        String filePath = fileName; // Path where the code will be saved
 
         // Write the submitted code to a file
         try (BufferedWriter writer = new BufferedWriter(new FileWriter(filePath))) {
@@ -86,7 +85,11 @@ public class FeedbackService {
             int compileResult = compileProcess.waitFor();
             if (compileResult != 0) {
                 String errors = readProcessOutput(compileProcess.getErrorStream());
-                return ResponseEntity.internalServerError().body("Compilation failed: " + errors);
+                Map<String, Object> response = new HashMap<>();
+                response.put("status", 1);
+                response.put("message", "Error in compiling the java class file");
+                response.put("result", errors); 
+                return ResponseEntity.ok(response);
             }
             String compileLog = readProcessOutput(compileProcess.getInputStream());
 
@@ -94,13 +97,20 @@ public class FeedbackService {
             int inferResult = inferProcess.waitFor();
             if (inferResult != 0) {
                 String errors = readProcessOutput(inferProcess.getErrorStream());
-                return ResponseEntity.internalServerError().body("Infer analysis failed: " + errors);
+                Map<String, Object> response = new HashMap<>();
+                response.put("status", 1);
+                response.put("message", "Error in analysing code with infer");
+                response.put("result", errors); 
+                return ResponseEntity.ok(response);
             }
             String analysisResult = readProcessOutput(inferProcess.getInputStream());
-
+           int count= countInferIssues(analysisResult);
             Map<String, Object> response = new HashMap<>();
-            response.put("message", "Code analyzed successfully.");
-            response.put("analysisResult", analysisResult); // Return analysis result
+            response.put("status", 0);
+            response.put("message", "Code analysed successfully with infer");
+            response.put("result", analysisResult);
+            response.put("issues", count);
+
             return ResponseEntity.ok(response);
         } catch (IOException | InterruptedException e) {
             e.printStackTrace();
@@ -119,8 +129,8 @@ public class FeedbackService {
         }
         return output.toString();
     }
-    public ResponseEntity<?> verifyWithCheckstyle(String code, String configContent) {
-        String filePath = "Fibonacci.java";  // Path where the code will be saved
+    public ResponseEntity<?> verifyWithCheckstyle(String code,String fileName, String configContent) {
+        String filePath = fileName;  // Path where the code will be saved
         String configFilePath = "checkstyle_config.xml"; // Path where the Checkstyle configuration will be saved
 
         // Write the submitted code to a file
@@ -149,7 +159,11 @@ public class FeedbackService {
             int compileResult = compileProcess.waitFor();
             if (compileResult != 0) {
                 String errors = readProcessOutput(compileProcess.getErrorStream());
-                return ResponseEntity.internalServerError().body("Compilation failed: " + errors);
+                Map<String, Object> response = new HashMap<>();
+                response.put("status", 1);
+                response.put("message", "Code analyzed unsuccessfully");
+                response.put("result", errors); 
+                return ResponseEntity.ok(response);
             }
 
             // Run Checkstyle on the code with the configuration file just created
@@ -163,21 +177,72 @@ public class FeedbackService {
             // Check if Checkstyle found any issues
             if (checkstyleResult != 0) {
                 System.out.println("Checkstyle errors: " + checkstyleErrors);
-                return ResponseEntity.internalServerError().body("Checkstyle analysis failed: " + checkstyleErrors);
+                Map<String, Object> response = new HashMap<>();
+                response.put("status", 1);
+                response.put("message", "Code analyzed unsuccessfully");
+                response.put("result", checkstyleErrors);
             }
-
+            int issueCount = countCheckStyleIssues(checkstyleOutput);
             Map<String, Object> response = new HashMap<>();
+            response.put("status",0);
             response.put("message", "Code analyzed successfully with Checkstyle.");
-            response.put("analysisResult", checkstyleOutput); // Return Checkstyle output
+            response.put("result", checkstyleOutput);
+            response.put("issues", issueCount);
+
             return ResponseEntity.ok(response);
         } catch (IOException | InterruptedException e) {
             e.printStackTrace();
-            return ResponseEntity.internalServerError().body("An error occurred during compilation or Checkstyle analysis.");
+            Map<String, Object> response = new HashMap<>();
+            response.put("status", 1);
+            response.put("message", "Something is wrong with the class file or class name");
+            response.put("result", ExceptionUtils.getStackTrace(e)); 
+            return ResponseEntity.ok(response);
         }
     }
-    public ResponseEntity<?> verifyWithSymbolicExecution(String code) {
-        String filePath = "Fibonacci.java";  // Path where the code will be saved
-        String className = "Fibonacci";  // Assuming class name is Fibonacci
+    private static int countJPFIssues(String output) {
+        String[] lines = output.split("\\r?\\n");
+        int count = 0;
+        for (String line : lines) {
+            if (line.startsWith("error")) {
+                count++;
+            }
+        }
+        return count;
+    }
+    private static int countInferIssues(String output) {
+        // Pattern to search for the "Found X issue(s)"
+        final String searchString = "Found ";
+        int index = output.indexOf(searchString);
+
+        if (index != -1) {
+            // Extract substring starting after "Found "
+            String substring = output.substring(index + searchString.length());
+            // Assume the number of issues is the first integer after "Found"
+            String[] words = substring.split("\\s+"); // Split by whitespace
+            try {
+                // Parse the first word which should be the number of issues
+                return Integer.parseInt(words[0]);
+            } catch (NumberFormatException e) {
+                System.err.println("Failed to parse number of issues: " + e.getMessage());
+                return 0;
+            }
+        }
+        return 0; // If "Found" is not in the string, return 0
+    }
+    private static int countCheckStyleIssues(String output) {
+        String[] lines = output.split(System.lineSeparator());
+        int count = 0;
+        for (String line : lines) {
+            if (line.contains("[WARN]") || line.contains("[ERROR]")) {
+                count++;
+            }
+        }
+        return count;
+    }
+
+    public ResponseEntity<?> verifyWithSymbolicExecution(String code,String fileName) {
+        String filePath = fileName;  // Path where the code will be saved
+        String className = fileName.replace(".java","");  // Assuming class name is Fibonacci
 
         // Write the submitted code to a file
         try (BufferedWriter writer = new BufferedWriter(new FileWriter(filePath))) {
@@ -193,7 +258,11 @@ public class FeedbackService {
             int compileResult = compileProcess.waitFor();
             if (compileResult != 0) {
                 String errors = readProcessOutput(compileProcess.getErrorStream());
-                return ResponseEntity.internalServerError().body("Compilation failed: " + errors);
+                Map<String, Object> response = new HashMap<>();
+                response.put("status", 1);
+                response.put("message", "Error in compiling the java class file");
+                response.put("result", errors); 
+                return ResponseEntity.ok(response);
             }
 
             // Create a .jpf file for Java Pathfinder
@@ -209,13 +278,19 @@ public class FeedbackService {
             int jpfResult = jpfProcess.waitFor();
             if (jpfResult != 0) {
                 String errors = readProcessOutput(jpfProcess.getErrorStream());
-                return ResponseEntity.internalServerError().body("Java Pathfinder analysis failed: " + errors);
+                Map<String, Object> response = new HashMap<>();
+                response.put("status", 1);
+                response.put("message", "Error in analysing the code with java pathfinder");
+                response.put("result", errors); 
+                return ResponseEntity.ok(response);
             }
             String analysisResult = readProcessOutput(jpfProcess.getInputStream());
-
+            int count=countJPFIssues(analysisResult);
             Map<String, Object> response = new HashMap<>();
-            response.put("message", "Code analyzed successfully with Java Pathfinder.");
-            response.put("analysisResult", analysisResult);  // Return analysis result
+            response.put("status", 0);
+            response.put("message", "Code analyzed successfully with JPF.");
+            response.put("result", analysisResult);
+            response.put("issues", count);
             return ResponseEntity.ok(response);
         } catch (IOException | InterruptedException e) {
             e.printStackTrace();
