@@ -1,9 +1,12 @@
-import React, { useState,useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { TextField, Button, Box, Typography, Grid, Paper, FormControlLabel, Checkbox, Table, TableBody, TableCell, TableRow, TableHead, TableContainer } from '@mui/material';
 import './App.css';
 import ArrowForwardIosIcon from '@mui/icons-material/ArrowForwardIos';
 import axios from 'axios';
 import demoJson from "./demos.json";
+import { BarChart } from '@mui/x-charts/BarChart';
+
+
 
 function App() {
   const [demos, setDemos] = useState({});
@@ -11,6 +14,10 @@ function App() {
   useEffect(() => {
     setDemos(demoJson);
   }, []);
+
+  const firstUpdate = useRef(true);
+
+
   const [classCode, setClassCode] = useState('');
   const [className, setClassName] = useState('');
   const [checkStyleConfig, setCheckStyleConfig] = useState('');
@@ -19,8 +26,28 @@ function App() {
   const [symbolicExecutionResult, setSymbolicExecutionResult] = useState({ status: "pending" });
   const [useDefaultCheckStyle, setUseDefaultCheckStyle] = useState(false);
 
-  const [results, setResults] = useState([]);
 
+
+  const [results, setResults] = useState([]);
+  const [updateTable, setUpdateTable] = useState(false);
+
+  useEffect(() => {
+    console.log("called")
+    if (firstUpdate.current) {
+      firstUpdate.current = false;
+      return;
+    }
+    let checkstyleIssues = checkstyleResult.issues != null ? checkstyleResult.issues : 0;
+    let inferIssues = inferResult.issues != null ? inferResult.issues : 0;
+    let symbolicIssues = symbolicExecutionResult.issues != null ? symbolicExecutionResult.issues : 0;
+    const newResults = [...results, {
+      checkstyle: checkstyleIssues,
+      infer: inferIssues,
+      symbolic: symbolicIssues,
+      iteration: results.length + 1,
+    }]
+    setResults(newResults);
+  }, [updateTable])
   const handleCheckStyleConfigChange = (event) => {
     setCheckStyleConfig(event.target.value);
     if (event.target.value !== '') {
@@ -62,8 +89,13 @@ function App() {
     } catch (error) {
       setSymbolicExecutionResult('Failed to verify');
     }
-    
+    // Update results table and graph data
+    setUpdateTable(!updateTable);
+
+
   };
+
+
 
   const handleFillWithDemoValues = (demoKey) => {
     const demo = demos[demoKey];
@@ -79,22 +111,22 @@ function App() {
           Verification Dashboard
         </Typography>
         {/* Button to set all fields to default values */}
-        <Box sx={{background:"#80808042",padding:"10px",borderRadius:"10px"}}>
-        <Typography variant="h6" gutterBottom>
-          Try with demo completions from chatgpt 3.5
-        </Typography>
-        {Object.keys(demos).map((demoKey) => (
-        <Button
-          key={demoKey}
-          variant="contained"
-          color="secondary"
-          onClick={() => handleFillWithDemoValues(demoKey)}
-          sx={{ mb: 2, mr: 1 }} // Added some right margin for spacing between buttons
-        >
-          {demos[demoKey]['title']}
-        </Button>
-      ))}
-      </Box>
+        <Box sx={{ background: "#80808042", padding: "10px", borderRadius: "10px" }}>
+          <Typography variant="h6" gutterBottom>
+            Try with demo completions from chatgpt 3.5
+          </Typography>
+          {Object.keys(demos).map((demoKey) => (
+            <Button
+              key={demoKey}
+              variant="contained"
+              color="secondary"
+              onClick={() => handleFillWithDemoValues(demoKey)}
+              sx={{ mb: 2, mr: 1 }} // Added some right margin for spacing between buttons
+            >
+              {demos[demoKey]['title']}
+            </Button>
+          ))}
+        </Box>
 
         <TextField
           label="Class Name"
@@ -139,7 +171,7 @@ function App() {
                 Checkstyle
               </Typography>
             </Paper>
-            <div style={{ maxHeight: 200, overflow: 'auto', padding: 8,background:"cyan" }}>
+            <div style={{ maxHeight: 200, overflow: 'auto', padding: 8, background: "cyan" }}>
               {checkstyleResult.result}
             </div>
           </Grid>
@@ -150,7 +182,7 @@ function App() {
                 Infer
               </Typography>
             </Paper>
-            <div style={{ maxHeight: 200, overflow: 'auto', padding: 8,background:"cyan" }}>
+            <div style={{ maxHeight: 200, overflow: 'auto', padding: 8, background: "cyan" }}>
               {inferResult.result}
             </div>
           </Grid>
@@ -161,7 +193,7 @@ function App() {
                 Symbolic Execution
               </Typography>
             </Paper>
-            <div style={{ maxHeight: 200, overflow: 'auto', padding: 8,background:"cyan" }}>
+            <div style={{ maxHeight: 200, overflow: 'auto', padding: 8, background: "cyan" }}>
               {symbolicExecutionResult.result}
             </div>
           </Grid>
@@ -170,32 +202,48 @@ function App() {
 
       </Box>
       <Box sx={{ display: 'flex', flexDirection: 'column', gap: 2, width: '30%', ml: 2, height: '100%' }}>
-        <Box sx={{ flexGrow: 8, overflow: 'auto' }}> {/* Use flexGrow for proportional sizing */}
+        <Box sx={{ flexGrow: 7, overflow: 'auto' }}> {/* Use flexGrow for proportional sizing */}
           <TableContainer component={Paper}>
             <Table stickyHeader>
               <TableHead>
                 <TableRow>
+                  <TableCell>Iteration Number</TableCell>
                   <TableCell>Checkstyle</TableCell>
                   <TableCell>Infer</TableCell>
                   <TableCell>Symbolic Execution</TableCell>
-                  <TableCell>Issues</TableCell>
                 </TableRow>
               </TableHead>
               <TableBody>
                 {results.map((result, index) => (
                   <TableRow key={index}>
+                    <TableCell>{result.iteration}</TableCell>
                     <TableCell>{result.checkstyle}</TableCell>
                     <TableCell>{result.infer}</TableCell>
                     <TableCell>{result.symbolic}</TableCell>
-                    <TableCell>{result.issues}</TableCell>
                   </TableRow>
                 ))}
               </TableBody>
             </Table>
           </TableContainer>
         </Box>
-        <Box sx={{ flexGrow: 2 }}> {/* Use flexGrow for proportional sizing */}
+        <Box sx={{
+          // flexGrow: 3,
+          height: "30vh", // Change this to 50vh to use 50% of the viewport height
+          // minHeight: '200px', // Ensures that the graph has a minimum height, adjust as needed
+          overflow: 'auto', // Adds scrollbars if the content is larger than the container
+        }}>
           <Typography>Graph Placeholder</Typography>
+          <BarChart
+            dataset={results}
+            xAxis={[{ scaleType: 'band', dataKey: 'iteration', label: 'Iteration' }]}
+            yAxis={[{ label: 'Number of Issues' }]}
+            series={[
+              { dataKey: 'checkstyle', label: 'Checkstyle' },
+              { dataKey: 'infer', label: 'Infer' },
+              { dataKey: 'symbolic', label: 'Symbolic Execution' }
+            ]}
+            // margin={{ top: 20, bottom: 30, left: 40, right: 10 }}
+          />
         </Box>
       </Box>
     </Box>
