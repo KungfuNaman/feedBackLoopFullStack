@@ -25,11 +25,10 @@ function App() {
   const [inferResult, setInferResult] = useState({ status: "pending" });
   const [symbolicExecutionResult, setSymbolicExecutionResult] = useState({ status: "pending" });
   const [useDefaultCheckStyle, setUseDefaultCheckStyle] = useState(false);
-
-
-
   const [results, setResults] = useState([]);
   const [updateTable, setUpdateTable] = useState(false);
+
+
 
   useEffect(() => {
     console.log("called")
@@ -104,12 +103,18 @@ function App() {
     handleCheckboxChange({ "target": { "checked": checkStyleConfig.length > 0 ? false : true } })
   };
   return (
-    <Box sx={{ display: 'flex', m: 2, height: '100vh' }}>
+    <Box sx={{ display: 'flex', m: 2, height: '97vh', overflow: "hidden" }}>
       <Box sx={{ width: '70%' }}>
+      <Box sx={{ display:"flex",justifyContent:'space-between' }}>
 
         <Typography variant="h4" gutterBottom>
-          Verification Dashboard
+          Iterative Feedback Verification Dashboard
         </Typography>
+        <Button variant="contained" color="primary" onClick={()=>window.location.reload()} sx={{ m: 2, display: 'flex' }}>
+          Clear Iterations
+        </Button>
+        </Box>
+
         {/* Button to set all fields to default values */}
         <Box sx={{ background: "#80808042", padding: "10px", borderRadius: "10px" }}>
           <Typography variant="h6" gutterBottom>
@@ -161,7 +166,7 @@ function App() {
           control={<Checkbox checked={useDefaultCheckStyle} onChange={handleCheckboxChange} />}
           label="Use Default Checkstyle Configuration"
         />
-        <Button variant="contained" color="primary" onClick={handleSubmit} sx={{ mt: 2, display: 'flex' }}>
+        <Button variant="contained" color="primary" onClick={handleSubmit} sx={{ m: 2, display: 'flex' }}>
           Submit
         </Button>
         <Grid container spacing={2} alignItems="flex-start" justifyContent="center">
@@ -202,15 +207,16 @@ function App() {
 
       </Box>
       <Box sx={{ display: 'flex', flexDirection: 'column', gap: 2, width: '30%', ml: 2, height: '100%' }}>
-        <Box sx={{ flexGrow: 7, overflow: 'auto' }}> {/* Use flexGrow for proportional sizing */}
+        <Box sx={{ flexGrow: 1, overflow: 'auto' }}> {/* Removed overflow: 'auto' */}
+          <Typography sx={{ fontWeight: "bold" }}> Resulted number of issues from the verifier tools</Typography>
           <TableContainer component={Paper}>
             <Table stickyHeader>
               <TableHead>
                 <TableRow>
-                  <TableCell>Iteration Number</TableCell>
-                  <TableCell>Checkstyle</TableCell>
-                  <TableCell>Infer</TableCell>
-                  <TableCell>Symbolic Execution</TableCell>
+                  <TableCell sx={{ fontWeight: "bold" }}>Iteration Number</TableCell>
+                  <TableCell sx={{ fontWeight: "bold" }}>Checkstyle</TableCell>
+                  <TableCell sx={{ fontWeight: "bold" }}>Infer</TableCell>
+                  <TableCell sx={{ fontWeight: "bold" }}>Symbolic Execution</TableCell>
                 </TableRow>
               </TableHead>
               <TableBody>
@@ -227,12 +233,9 @@ function App() {
           </TableContainer>
         </Box>
         <Box sx={{
-          // flexGrow: 3,
-          height: "30vh", // Change this to 50vh to use 50% of the viewport height
-          // minHeight: '200px', // Ensures that the graph has a minimum height, adjust as needed
-          overflow: 'auto', // Adds scrollbars if the content is larger than the container
-        }}>
-          <Typography>Graph Placeholder</Typography>
+          height: "50vh", // Adjusted height
+        }}> {/* Removed overflow: 'auto' */}
+          <Typography sx={{ fontWeight: 'bold' }}>Graph for Number of issues for every iteration</Typography>
           <BarChart
             dataset={results}
             xAxis={[{ scaleType: 'band', dataKey: 'iteration', label: 'Iteration' }]}
@@ -242,10 +245,11 @@ function App() {
               { dataKey: 'infer', label: 'Infer' },
               { dataKey: 'symbolic', label: 'Symbolic Execution' }
             ]}
-            // margin={{ top: 20, bottom: 30, left: 40, right: 10 }}
+          // margin={{ top: 20, bottom: 30, left: 40, right: 10 }}
           />
         </Box>
       </Box>
+
     </Box>
   );
 }
